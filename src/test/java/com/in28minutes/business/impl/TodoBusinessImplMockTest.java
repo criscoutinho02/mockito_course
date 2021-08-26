@@ -5,6 +5,7 @@ import com.in28minutes.data.api.TodoService;
 import com.in28minutes.data.api.TodoServiceStub;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,8 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 public class TodoBusinessImplMockTest {
@@ -76,6 +76,57 @@ public class TodoBusinessImplMockTest {
         expectedResult.add("Learn Spring");
 
         assertThat(filteredTodos , is(expectedResult));
+
+    }
+
+    @Test
+    public void testDeleteTodosNotRelatedToSpring_usingBDD(){
+
+        //Given
+        TodoService todoServiceMock = mock(TodoService.class);
+
+        List<String> todos = Arrays.asList("Learn Spring MVC" , "Learn Spring" , "Learn to Dance");
+        given(todoServiceMock.retrieveTodos("Dummy")).willReturn(todos);
+        TodoBusinessImpl todoBusinessImpl = new TodoBusinessImpl(todoServiceMock);
+
+        //When
+        todoBusinessImpl.deleteTodosNotRelatedToSpring("Dummy");
+        //Then
+        verify(todoServiceMock).deleteTodo("Learn to Dance");
+
+    }
+
+    @Test
+    public void testNotDeleteTodosRelatedToSpring_usingBDD(){
+
+        //Given
+        TodoService todoServiceMock = mock(TodoService.class);
+
+        List<String> todos = Arrays.asList("Learn Spring MVC" , "Learn Spring" , "Learn to Dance");
+        given(todoServiceMock.retrieveTodos("Dummy")).willReturn(todos);
+        TodoBusinessImpl todoBusinessImpl = new TodoBusinessImpl(todoServiceMock);
+
+        //When
+        todoBusinessImpl.deleteTodosNotRelatedToSpring("Dummy");
+        //Then
+        verify(todoServiceMock, never()).deleteTodo("Learn Spring");
+
+    }
+
+    @Test
+    public void testDeleteTodosRelatedToSpringTimes_usingBDD(){
+
+        //Given
+        TodoService todoServiceMock = mock(TodoService.class);
+
+        List<String> todos = Arrays.asList("Learn Spring MVC" , "Learn Spring" , "Learn to Dance");
+        given(todoServiceMock.retrieveTodos("Dummy")).willReturn(todos);
+        TodoBusinessImpl todoBusinessImpl = new TodoBusinessImpl(todoServiceMock);
+
+        //When
+        todoBusinessImpl.deleteTodosNotRelatedToSpring("Dummy");
+        //Then
+        verify(todoServiceMock, times(1)).deleteTodo(anyString());
 
     }
 
