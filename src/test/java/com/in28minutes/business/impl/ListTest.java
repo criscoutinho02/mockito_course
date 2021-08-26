@@ -1,7 +1,11 @@
 package com.in28minutes.business.impl;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Matchers;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyInt;
 
 import java.util.List;
@@ -23,6 +27,18 @@ public class ListTest {
 
 
 
+    }
+
+    @Test
+    public void letsMockListsGet_BDD(){
+        //Given
+        List<String> listMock = mock(List.class);
+        given(listMock.get(anyInt())).willReturn("Cris");
+        //When
+        String result = listMock.get(3);
+
+        //Then
+        Assert.assertThat(result , is("Cris"));
     }
 
     @Test(expected = RuntimeException.class)
