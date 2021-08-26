@@ -53,4 +53,24 @@ public class TodoBusinessImplMockTest {
 
     }
 
+    @Test
+    public void testRetrieveTodosRelatedToSpring_usingBDDMock(){
+
+        TodoService todoServiceMock = mock(TodoService.class);
+
+        List<String> todos = Arrays.asList("Learn Spring MVC" , "Learn Spring" , "Learn to Dance");
+        when(todoServiceMock.retrieveTodos("Dummy")).thenReturn(todos);
+
+        TodoBusinessImpl todoBusinessImpl = new TodoBusinessImpl(todoServiceMock);
+
+        List<String> filteredTodos =
+                todoBusinessImpl.retrieveTodosRelatedToSpring("Dummy");
+        List<String> expectedResult =  new ArrayList<String>();
+        expectedResult.add("Learn Spring MVC");
+        expectedResult.add("Learn Spring");
+
+        assertEquals(expectedResult , filteredTodos);
+
+    }
+
 }
