@@ -36,7 +36,6 @@ public class ListTest {
         given(listMock.get(anyInt())).willReturn("Cris");
         //When
         String result = listMock.get(3);
-
         //Then
         Assert.assertThat(result , is("Cris"));
     }
