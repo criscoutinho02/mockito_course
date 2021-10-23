@@ -31,9 +31,6 @@ public class HamcrestMatchersTest {
         assertThat(marks, arrayContainingInAnyOrder(3 , 2 , 1));
         //assertThat(marks, arrayContainingInAnyOrder( 2 , 1));
 
-
-
-
     }
 
 }
